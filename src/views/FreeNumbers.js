@@ -85,17 +85,19 @@ const FreeNumbers = (
             <CContainer className='c_fp_second_cc_content' data-reveal-delay="300">
               <CRow>
                 <CCol sm="1">No</CCol>
+                <CCol sm="2">From</CCol>
                 <CCol sm="2">Number</CCol>
-                <CCol sm="6">Text</CCol>
-                <CCol sm="3">Datetime</CCol>
+                <CCol sm="5">Text</CCol>
+                <CCol sm="2">Datetime</CCol>
               </CRow>
               {
                 callHistory.map((item, i) => {
                   return <CRow>
                     <CCol sm="1">{i + 1}</CCol>
+                    <CCol sm="2">{item.From}</CCol>
                     <CCol sm="2">{item.SimNumber}</CCol>
-                    <CCol sm="6">{item.Body}</CCol>
-                    <CCol sm="3">{item.DateTime}</CCol>
+                    <CCol sm="5">{item.Body}</CCol>
+                    <CCol sm="2">{item.DateTime}</CCol>
                   </CRow>
                 })
               }
