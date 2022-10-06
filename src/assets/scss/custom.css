@@ -108,3 +108,31 @@ model-viewer {
 .c_fp_second_cc_content>.row>div:nth-child(3) {
     font-style: italic;
 }
+
+@media only screen and (max-width: 768px) {
+    .c_md_up_show {
+        display: none;
+    }
+    .c_md_ud_show {
+        display: inline-block;
+        font-weight: bold;
+        font-style: italic;
+        color: white;
+        margin-right: 10px;
+    }
+    .c_fp_second_cc_content>.row>div:first-child {
+        text-align: left;
+    }
+    .c_fp_second_tlt {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .c_md_up_show {
+        display: flex;
+    }
+    .c_md_ud_show {
+        display: none;
+    }
+}

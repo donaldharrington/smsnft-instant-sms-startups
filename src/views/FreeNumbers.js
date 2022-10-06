@@ -92,7 +92,7 @@ const FreeNumbers = (
           let callHistory = item.callHistory;
           return <CContainer className='c_fp_first_cc' key={item.SimNumber}>
             <CRow>
-              <CCol sm="3" className='c_fp_phonenum_list_cc'>
+              <CCol md="3" className='c_fp_phonenum_list_cc'>
                 <model-viewer 
                   className="c_main_demo_viewer" 
                   src={require('./../assets/model/smsnft.glb')} 
@@ -104,22 +104,22 @@ const FreeNumbers = (
                   <div className='c_fp_freephone_tlt_dv'>{item.SimNumber}</div>
                 </div>
               </CCol>
-              <CCol sm="9" className='c_fp_second_cc'>
+              <CCol md="9" className='c_fp_second_cc'>
                 <div className='c_fp_second_tlt' data-reveal-delay="200">Latest Incomming Texts</div>
                 <CContainer className='c_fp_second_cc_content' data-reveal-delay="300">
-                  <CRow>
-                    <CCol sm="1">No</CCol>
-                    <CCol sm="2">From</CCol>                
-                    <CCol sm="6">Text</CCol>
-                    <CCol sm="3">Datetime</CCol>
+                  <CRow className='c_md_up_show'>
+                    <CCol md="1">No</CCol>
+                    <CCol md="2">From</CCol>                
+                    <CCol md="6">Text</CCol>
+                    <CCol md="3">Datetime</CCol>
                   </CRow>
                   {                    
                     callHistory.map((item, i) => {
                       return <CRow key={item.From}>
-                        <CCol sm="1">{i + 1}</CCol>
-                        <CCol sm="2">{item.From}</CCol>
-                        <CCol sm="6">{item.Body}</CCol>
-                        <CCol sm="3">{item.DateTime}</CCol>
+                        <CCol md="1"><span className='c_md_ud_show'>No: </span>{i + 1}</CCol>
+                        <CCol md="2"><span className='c_md_ud_show'>From: </span>{item.From}</CCol>
+                        <CCol md="6"><span className='c_md_ud_show'>Text: </span>{item.Body}</CCol>
+                        <CCol md="3"><span className='c_md_ud_show'>Datetime: </span>{item.DateTime}</CCol>
                       </CRow>
                     })
                   }
