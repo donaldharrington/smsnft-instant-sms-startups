@@ -10,6 +10,10 @@ import * as serviceWorker from './serviceWorker';
 import './assets/scss/style.scss';
 import './assets/scss/custom.css';
 
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-244048122-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 const history = createBrowserHistory();
 
 ReactDOM.render(
