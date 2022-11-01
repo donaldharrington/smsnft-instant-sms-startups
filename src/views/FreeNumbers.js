@@ -5,6 +5,8 @@ import { getAllFreeNumbers, getAllCallHistory } from "../api/api"
 import { CContainer, CRow, CCol } from '@coreui/bootstrap-react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+import loaderSVG from "../assets/images/svg-loaders/spinning-circles.svg"
+
 const FreeNumbers = (
   topOuterDivider,
   bottomOuterDivider,
@@ -21,6 +23,7 @@ const FreeNumbers = (
     invertColor && 'invert-color'
   );
 
+  const [isLoading, setIsLoading] = useState(true)
   const [freeNumbers, setFreeNumbers] = useState([])
   const [callHistories, setCallHistories] = useState([])
 
@@ -31,11 +34,14 @@ const FreeNumbers = (
       setFreeNumbers(result);
       getAllCallHistoryFunc(result);
     } catch (error) {
+      /*
       if (error.data) {
         console.log(error.data.message || error.data);
       } else {
         console.log(error.message);
       }
+      */
+     setIsLoading(false)
     } finally {
     }
   };
@@ -53,26 +59,18 @@ const FreeNumbers = (
         return val;
       });
       let call_histories  = await Promise.all(proms);
-      /*
-      let call_histories = [];
-      for await ( const item of numbers ) {
-        const sim_number = item.SimNumber;
-        const call_history = await getAllCallHistory(sim_number.replace("+", ""));
-        
-        const val = {
-          SimNumber : sim_number,
-          callHistory: call_history
-        }
-        call_histories.push(val)
-      }
-      */
+      
      setCallHistories(call_histories);
+
+     setIsLoading(false)
     } catch (error) {
+      /*
       if (error.data) {
         console.log(error.data.message || error.data);
       } else {
         console.log(error.message);
       }
+      */
     } finally {
     }
   };
@@ -81,55 +79,66 @@ const FreeNumbers = (
     getAllFreeNumbersFunc();  
   }, []);
 
+  const onClickRefresh = () => {
+    window.location.reload(false);
+  }
   
 
   return (
-    <section className={outerClasses}>
+    <React.Fragment>
       {
-        callHistories.length !== 0 && callHistories.map((item, i) => {
-          let SimNumber = item.SimNumber;
-          SimNumber = SimNumber.replace("+", "");
-          let callHistory = item.callHistory;
-          return <CContainer className='c_fp_first_cc' key={item.SimNumber}>
-            <CRow>
-              <CCol md="3" className='c_fp_phonenum_list_cc'>
-                <model-viewer 
-                  className="c_main_demo_viewer" 
-                  src={require('./../assets/model/smsnft.glb')} 
-                  alt="MIke Row Soft Model" 
-                  auto-rotate camera-controls ar 
-                  ios-src={require('./../assets/model/smsnft.glb')}>
-                </model-viewer>
-                <div className='c_fp_freephone_dv'>              
-                  <div className='c_fp_freephone_tlt_dv'>{item.SimNumber}</div>
-                </div>
-              </CCol>
-              <CCol md="9" className='c_fp_second_cc'>
-                <div className='c_fp_second_tlt' data-reveal-delay="200">Latest Incomming Texts</div>
-                <CContainer className='c_fp_second_cc_content' data-reveal-delay="300">
-                  <CRow className='c_md_up_show'>
-                    <CCol md="1">No</CCol>
-                    <CCol md="2">From</CCol>                
-                    <CCol md="6">Text</CCol>
-                    <CCol md="3">Datetime</CCol>
-                  </CRow>
-                  {                    
-                    callHistory.map((item, i) => {
-                      return <CRow key={item.From}>
-                        <CCol md="1"><span className='c_md_ud_show'>No: </span>{i + 1}</CCol>
-                        <CCol md="2"><span className='c_md_ud_show'>From: </span>{item.From}</CCol>
-                        <CCol md="6"><span className='c_md_ud_show'>Text: </span>{item.Body}</CCol>
-                        <CCol md="3"><span className='c_md_ud_show'>Datetime: </span>{item.DateTime}</CCol>
-                      </CRow>
-                    })
-                  }
-                </CContainer>
-              </CCol>
-            </CRow>
-          </CContainer>
-        })
+        isLoading && isLoading == true? <div className="loading_dv">
+          <img src={loaderSVG} />
+        </div>:""
       }
-    </section>
+      <section className={outerClasses}>
+        <div className="c_refresh_dv"><div onClick={onClickRefresh}>REFRESH</div></div>
+        {
+          callHistories.length !== 0 && callHistories.map((item, i) => {
+            let SimNumber = item.SimNumber;
+            SimNumber = SimNumber.replace("+", "");
+            let callHistory = item.callHistory;
+            return <CContainer className='c_fp_first_cc' key={i}>
+              <CRow>
+                <CCol md="3" className='c_fp_phonenum_list_cc'>
+                  <model-viewer 
+                    className="c_main_demo_viewer" 
+                    src={require('./../assets/model/smsnft.glb')} 
+                    alt="MIke Row Soft Model" 
+                    auto-rotate camera-controls ar 
+                    ios-src={require('./../assets/model/smsnft.glb')}>
+                  </model-viewer>
+                  <div className='c_fp_freephone_dv'>              
+                    <div className='c_fp_freephone_tlt_dv'>{item.SimNumber}</div>
+                  </div>
+                </CCol>
+                <CCol md="9" className='c_fp_second_cc'>
+                  <div className='c_fp_second_tlt' data-reveal-delay="200">Latest Incomming Texts</div>
+                  <CContainer className='c_fp_second_cc_content' data-reveal-delay="300">
+                    <CRow className='c_md_up_show'>
+                      <CCol md="1">No</CCol>
+                      <CCol md="2">From</CCol>                
+                      <CCol md="6">Text</CCol>
+                      <CCol md="3">Datetime</CCol>
+                    </CRow>
+                    {                    
+                      callHistory.map((item, ii) => {
+                        return <CRow key={ii}>
+                          <CCol md="1"><span className='c_md_ud_show'>No: </span>{i + 1}</CCol>
+                          <CCol md="2"><span className='c_md_ud_show'>From: </span>{item.From}</CCol>
+                          <CCol md="6"><span className='c_md_ud_show'>Text: </span>{item.Body}</CCol>
+                          <CCol md="3"><span className='c_md_ud_show'>Datetime: </span>{item.DateTime}</CCol>
+                        </CRow>
+                      })
+                    }
+                  </CContainer>
+                </CCol>
+              </CRow>
+            </CContainer>
+          })
+        }
+      </section>
+    </React.Fragment>
   );
 }
 
